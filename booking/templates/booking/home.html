@@ -5,4 +5,37 @@
 {% block content %}
     <h1>Welcome to the Online Ticket Booking System</h1>
     <p>Book your tickets easily and quickly!</p>
+
+    <ul>
+
+        {% for fruit in fruits %}
+        {% comment %} {{ forloop.counter }} {% endcomment %}
+
+            {% comment %} <li>{{ fruit }}</li> {% endcomment %}
+
+            {% comment %} {{forloop.last}} {% endcomment %}
+
+            {% if forloop.last %}
+                <li>{{ fruit }} (last item)</li>
+            {% else %}
+                <li>{{ fruit }}</li>
+            {% endif %}
+
+        {% empty %}
+
+        <li>No fruits available.</li>
+
+        {% endfor  %}
+
+    </ul>
+
+    <p>{% now "d-m-Y" %}</p>
+    <p>{% now "H:i" %}</p>
+
+    {% comment %} 
+    
+        <input type="text" id="myInput" placeholder="Type to search..." onkeyup="filterList()"> 
+    
+    {% endcomment %}
+
 {% endblock %}

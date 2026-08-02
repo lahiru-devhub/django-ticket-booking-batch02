@@ -5,10 +5,10 @@
 
     <!-- Links (Hidden on mobile) -->
     <ul class="hidden md:flex space-x-6">
-      <li><a href="#" class="hover:text-gray-300">Home</a></li>
-      <li><a href="#" class="hover:text-gray-300">About</a></li>
-      <li><a href="#" class="hover:text-gray-300">Services</a></li>
-      <li><a href="#" class="hover:text-gray-300">Contact</a></li>
+      <li><a href="{% url 'home' %}" class="hover:text-gray-300">Home</a></li>
+      <li><a href="{% url 'about' %}" class="hover:text-gray-300">About</a></li>
+      <li><a href="{% url 'faq' %}" class="hover:text-gray-300">FAQ</a></li>
+      <li><a href="{% url 'contact' %}" class="hover:text-gray-300">Contact</a></li>
     </ul>
 
     <!-- Mobile Menu Button -->
@@ -20,10 +20,10 @@
   <!-- Mobile Menu (Hidden by default) -->
   <div id="mobile-menu" class="hidden md:hidden bg-blue-700">
     <ul class="flex flex-col items-center space-y-4 py-4">
-      <li><a href="#" class="hover:text-gray-300">Home</a></li>
-      <li><a href="#" class="hover:text-gray-300">About</a></li>
-      <li><a href="#" class="hover:text-gray-300">Services</a></li>
-      <li><a href="#" class="hover:text-gray-300">Contact</a></li>
+      <li><a href="{% url 'home' %}" class="hover:text-gray-300">Home</a></li>
+      <li><a href="{% url 'about' %}" class="hover:text-gray-300">About</a></li>
+      <li><a href="{% url 'faq' %}" class="hover:text-gray-300">FAQ</a></li>
+      <li><a href="{% url 'contact' %}" class="hover:text-gray-300">Contact</a></li>
     </ul>
   </div>
 </header>
