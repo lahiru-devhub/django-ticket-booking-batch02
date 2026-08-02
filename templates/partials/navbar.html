@@ -1,0 +1,38 @@
+<header class="bg-blue-600 text-white">
+  <nav class="flex justify-between items-center px-6 py-4">
+    <!-- Logo -->
+    <div class="text-lg font-bold">MyLogo</div>
+
+    <!-- Links (Hidden on mobile) -->
+    <ul class="hidden md:flex space-x-6">
+      <li><a href="#" class="hover:text-gray-300">Home</a></li>
+      <li><a href="#" class="hover:text-gray-300">About</a></li>
+      <li><a href="#" class="hover:text-gray-300">Services</a></li>
+      <li><a href="#" class="hover:text-gray-300">Contact</a></li>
+    </ul>
+
+    <!-- Mobile Menu Button -->
+    <button id="menu-btn" class="md:hidden text-2xl focus:outline-none">
+      ☰
+    </button>
+  </nav>
+
+  <!-- Mobile Menu (Hidden by default) -->
+  <div id="mobile-menu" class="hidden md:hidden bg-blue-700">
+    <ul class="flex flex-col items-center space-y-4 py-4">
+      <li><a href="#" class="hover:text-gray-300">Home</a></li>
+      <li><a href="#" class="hover:text-gray-300">About</a></li>
+      <li><a href="#" class="hover:text-gray-300">Services</a></li>
+      <li><a href="#" class="hover:text-gray-300">Contact</a></li>
+    </ul>
+  </div>
+</header>
+
+<script>
+  const menuBtn = document.getElementById("menu-btn");
+  const mobileMenu = document.getElementById("mobile-menu");
+
+  menuBtn.addEventListener("click", () => {
+    mobileMenu.classList.toggle("hidden");
+  });
+</script>

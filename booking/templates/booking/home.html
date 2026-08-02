@@ -1,23 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
+{% block title %} Home {% endblock %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Online Ticket Booking</title>
-</head>
 
-<body>
+{% block content %}
     <h1>Welcome to the Online Ticket Booking System</h1>
     <p>Book your tickets easily and quickly!</p>
-
-    <nav>
-        <ul>
-            <li><a href="{% url 'home' %}">Home</a></li>
-            <li><a href="/about">About us</a></li>
-            <li><a href="/contact">Contact</a></li>
-        </ul>
-    </nav>
-</body>
-
-</html>
+{% endblock %}
