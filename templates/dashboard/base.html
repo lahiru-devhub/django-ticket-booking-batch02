@@ -1,0 +1,44 @@
+{% load tailwind_tags %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>
+        {% block title %}Dashboard{% endblock %}
+    </title>
+
+    {% tailwind_css %}
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body class="min-h-screen bg-gray-50">
+
+    <!-- Sidebar -->
+    {% include "dashboard/partials/sidebar.html" %}
+
+    <!-- Main Area -->
+    <main class="ml-64 min-h-screen">
+
+        <!-- Header -->
+        {% include "dashboard/partials/header.html" %}
+
+        <!-- Page Content -->
+        <div class="p-8">
+            {% block dashboard_content %}
+            {% endblock %}
+        </div>
+
+        <!-- Footer -->
+        {% include "dashboard/partials/footer.html" %}
+
+    </main>
+
+</body>
+
+</html>
