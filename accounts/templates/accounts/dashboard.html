@@ -1,0 +1,29 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}
+    Dashboard
+{% endblock %}
+
+{% block dashboard_content %}
+
+
+<div class="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+
+    <div class="rounded-xl bg-white p-6 shadow-sm ring-1 ring-gray-200">
+        <p class="text-sm text-gray-500">Total Bookings</p>
+        <p class="mt-2 text-3xl font-bold text-gray-900">0</p>
+    </div>
+
+    <div class="rounded-xl bg-white p-6 shadow-sm ring-1 ring-gray-200">
+        <p class="text-sm text-gray-500">Upcoming Tickets</p>
+        <p class="mt-2 text-3xl font-bold text-gray-900">0</p>
+    </div>
+
+    <div class="rounded-xl bg-white p-6 shadow-sm ring-1 ring-gray-200">
+        <p class="text-sm text-gray-500">Completed Trips</p>
+        <p class="mt-2 text-3xl font-bold text-gray-900">0</p>
+    </div>
+
+</div>
+
+{% endblock %}
