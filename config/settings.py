@@ -26,7 +26,9 @@ SECRET_KEY = config("SECRET_KEY", default="django-insecure-&9qbyq334&j=s_xpu$95b
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    # "localhost"
+]
 
 
 # Application definition
@@ -125,12 +127,26 @@ USE_I18N = True
 
 USE_TZ = True
 
+# Email (Mailtrap SMTP)
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = config("EMAIL_HOST", "sandbox.smtp.mailtrap.io")
+EMAIL_PORT = int(config("EMAIL_PORT", "2525"))
+EMAIL_HOST_USER = config("EMAIL_HOST_USER", "")
+EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", "")
+EMAIL_USE_TLS = config("EMAIL_USE_TLS", "True").lower() in {"1", "true", "yes"}
+EMAIL_USE_SSL = config("EMAIL_USE_SSL", "False").lower() in {"1", "true", "yes"}
+DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL", EMAIL_HOST_USER or "no-reply@example.com")
+
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 
 TAILWIND_APP_NAME = "theme"

@@ -1,0 +1,181 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Events{% endblock %}
+
+{% block content %}
+<main
+    class="min-h-screen bg-linear-to-b from-blue-50 via-white to-sky-50"
+    style="font-family: 'Plus Jakarta Sans', 'Manrope', sans-serif;"
+>
+    <section class="mx-auto w-full max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+
+        <div class="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+                <p class="text-sm font-extrabold uppercase tracking-[0.2em] text-sky-700">
+                    Discover
+                </p>
+
+                <h1 class="mt-2 text-3xl font-black tracking-tight text-slate-900 sm:text-4xl">
+                    All Published Events
+                </h1>
+
+                <p class="mt-2 max-w-2xl text-sm leading-6 text-slate-600">
+                    Browse upcoming experiences and reserve your seat before they sell out.
+                </p>
+            </div>
+
+            <a
+                href="{% url 'home' %}"
+                class="inline-flex w-fit items-center justify-center rounded-xl border border-slate-300 bg-white px-5 py-2.5 text-sm font-bold text-slate-700 shadow-sm transition hover:bg-slate-100"
+            >
+                Back to Home
+            </a>
+        </div>
+
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
+
+            {% for event in events %}
+                <article
+                    class="group flex h-full flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl"
+                >
+
+                    <div class="relative overflow-hidden">
+                        {% if event.image %}
+                            <img
+                                src="{{ event.image.url }}"
+                                alt="{{ event.title }}"
+                                class="h-52 w-full object-cover transition duration-300 group-hover:scale-105"
+                            >
+                        {% else %}
+                            <img
+                                src="{% static 'images/default.webp' %}"
+                                alt="{{ event.title }}"
+                                class="h-52 w-full object-cover transition duration-300 group-hover:scale-105"
+                            >
+                        {% endif %}
+
+                        <span
+                            class="absolute left-4 top-4 rounded-full bg-slate-950/80 px-3 py-1.5 text-xs font-bold text-white backdrop-blur"
+                        >
+                            {{ event.event_date }}
+                        </span>
+
+                        {% if event.available_tickets < 1 %}
+                            <span
+                                class="absolute right-4 top-4 rounded-full bg-red-600 px-3 py-1.5 text-xs font-bold uppercase tracking-wide text-white"
+                            >
+                                Sold Out
+                            </span>
+                        {% endif %}
+                    </div>
+
+                    <div class="flex flex-1 flex-col p-6">
+
+                        {% if event.venue.city %}
+                            <p class="text-xs font-extrabold uppercase tracking-[0.15em] text-sky-700">
+                                {{ event.venue.city }}
+                            </p>
+                        {% endif %}
+
+                        <h2 class="mt-2 text-xl font-black tracking-tight text-slate-900">
+                            {{ event.title }}
+                        </h2>
+
+                        <p class="mt-3 text-sm leading-6 text-slate-600">
+                            {{ event.event_time }}
+                            <span class="mx-1 text-slate-300">•</span>
+                            {{ event.venue.name }}
+                        </p>
+
+                        <div class="mt-4 rounded-2xl bg-slate-50 p-4">
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-slate-500">
+                                    Tickets available
+                                </span>
+
+                                <span class="text-sm font-bold text-slate-900">
+                                    {{ event.available_tickets }}
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="mt-auto pt-6">
+
+                            <div class="mb-4 flex items-end justify-between gap-3">
+                                <div>
+                                    <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                                        From
+                                    </p>
+
+                                    <p class="mt-1 text-2xl font-black text-blue-700">
+                                        LKR {{ event.price }}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-3">
+
+                                <a
+                                    href="{% url 'event_detail' event.id %}"
+                                    class="inline-flex items-center justify-center rounded-xl bg-slate-900 px-4 py-3 text-sm font-bold text-white transition hover:bg-slate-800"
+                                >
+                                    View Details
+                                </a>
+
+                                {% if event.available_tickets > 0 %}
+
+                                    {% if request.user.is_authenticated %}
+                                        <a
+                                            href="{% url 'book_event' event.id %}"
+                                            class="inline-flex items-center justify-center rounded-xl border border-sky-200 bg-sky-50 px-4 py-3 text-sm font-bold text-sky-700 transition hover:bg-sky-100"
+                                        >
+                                            Book Now
+                                        </a>
+                                    {% else %}
+                                        <a
+                                            href="{% url 'login' %}?next={% url 'book_event' event.id %}"
+                                            class="inline-flex items-center justify-center rounded-xl border border-sky-200 bg-sky-50 px-4 py-3 text-sm font-bold text-sky-700 transition hover:bg-sky-100"
+                                        >
+                                            Login to Book
+                                        </a>
+                                    {% endif %}
+
+                                {% else %}
+                                    <button
+                                        type="button"
+                                        disabled
+                                        class="cursor-not-allowed rounded-xl border border-slate-200 bg-slate-100 px-4 py-3 text-sm font-bold text-slate-400"
+                                    >
+                                        Sold Out
+                                    </button>
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </article>
+
+            {% empty %}
+
+                <div
+                    class="rounded-3xl border border-dashed border-slate-300 bg-white px-6 py-16 text-center md:col-span-2 xl:col-span-3"
+                >
+                    <p class="text-lg font-black text-slate-900">
+                        No events available
+                    </p>
+
+                    <p class="mt-2 text-sm text-slate-600">
+                        New events will appear here once they are published.
+                    </p>
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+</main>
+{% endblock %}

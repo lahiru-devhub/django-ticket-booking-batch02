@@ -1,50 +1,205 @@
-{% extends "base.html" %}
-{% load static %}
-{% block title %} Home {% endblock %}
-
-
+{% extends "base.html" %} {% load static %} {% block title %}Home{% endblock %}
 {% block content %}
-    <h1>Welcome to the Online Ticket Booking System</h1>
-    <p>Book your tickets easily and quickly!</p>
+<main
+  class="relative overflow-hidden bg-linear-to-b from-blue-50 via-white to-sky-50"
+  style="
+    font-family: &quot;Plus Jakarta Sans&quot;, &quot;Manrope&quot;, sans-serif;
+  "
+>
+  <div
+    class="pointer-events-none absolute -left-20 top-8 h-72 w-72 rounded-full bg-blue-200/40 blur-3xl"
+  ></div>
+  <div
+    class="pointer-events-none absolute -right-24 top-24 h-80 w-80 rounded-full bg-sky-200/50 blur-3xl"
+  ></div>
 
-    <ul>
+  <section
+    class="mx-auto grid w-full max-w-7xl gap-10 px-4 pb-16 pt-10 sm:px-6 lg:grid-cols-2 lg:items-center lg:px-8 lg:pt-16"
+  >
+    <div>
+      <p
+        class="inline-flex items-center rounded-full border border-blue-200 bg-white/80 px-3 py-1 text-xs font-extrabold uppercase tracking-[0.2em] text-blue-700"
+      >
+        Live Ticket Platform
+      </p>
+      <h1
+        class="mt-4 text-4xl font-black leading-tight tracking-tight text-slate-900 sm:text-5xl lg:text-6xl"
+      >
+        Color Your Weekend With
+        <span
+          class="bg-linear-to-r from-blue-700 to-sky-500 bg-clip-text text-transparent"
+          >Unmissable Events</span
+        >
+      </h1>
+      <p class="mt-5 max-w-xl text-base leading-7 text-slate-600 sm:text-lg">
+        Discover concerts, comedy nights, tech meetups, and city festivals in
+        one place. Book in seconds with instant confirmation and transparent
+        pricing.
+      </p>
 
-        {% for fruit in fruits %}
-        {% comment %} {{ forloop.counter }} {% endcomment %}
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a
+          href="#latest-events"
+          class="rounded-xl bg-slate-900 px-6 py-3 text-sm font-extrabold text-white shadow-lg shadow-slate-300 transition hover:-translate-y-0.5 hover:bg-slate-800"
+        >
+          Explore Trending
+        </a>
+        <a
+          href="{% url 'venue' %}"
+          class="rounded-xl border border-slate-300 bg-white px-6 py-3 text-sm font-bold text-slate-700 transition hover:bg-slate-100"
+        >
+          View All Events
+        </a>
+      </div>
 
-            {% comment %} <li>{{ fruit }}</li> {% endcomment %}
+      <div class="mt-8 grid max-w-lg grid-cols-3 gap-3">
+        <div class="rounded-2xl bg-white/90 p-4 ring-1 ring-slate-200">
+          <p class="text-2xl font-black text-slate-900">1K+</p>
+          <p
+            class="text-xs font-semibold uppercase tracking-wide text-slate-500"
+          >
+            Weekly Bookings
+          </p>
+        </div>
+        <div class="rounded-2xl bg-white/90 p-4 ring-1 ring-slate-200">
+          <p class="text-2xl font-black text-slate-900">80+</p>
+          <p
+            class="text-xs font-semibold uppercase tracking-wide text-slate-500"
+          >
+            Fresh Events
+          </p>
+        </div>
+        <div class="rounded-2xl bg-white/90 p-4 ring-1 ring-slate-200">
+          <p class="text-2xl font-black text-slate-900">4.9/5</p>
+          <p
+            class="text-xs font-semibold uppercase tracking-wide text-slate-500"
+          >
+            User Rating
+          </p>
+        </div>
+      </div>
+    </div>
 
-            {% comment %} {{forloop.last}} {% endcomment %}
+    <div
+      class="relative overflow-hidden rounded-3xl border border-white/70 bg-white/90 p-3 shadow-xl shadow-blue-100/70"
+    >
+      <img
+        src="{% static 'images/home.webp' %}"
+        alt="Crowd enjoying a live event"
+        class="h-80 w-full rounded-2xl object-cover sm:h-120"
+      />
+      <div
+        class="absolute bottom-6 left-6 rounded-2xl bg-slate-900/85 px-5 py-4 text-white backdrop-blur-sm"
+      >
+        <p class="text-xs font-bold uppercase tracking-[0.2em] text-blue-300">
+          Tonight 08:30 PM
+        </p>
+        <p class="mt-1 text-base font-extrabold">City Lights Summer Concert</p>
+        <p class="text-xs text-slate-300">Grand Arena, Colombo</p>
+      </div>
+    </div>
+  </section>
 
-            {% if forloop.last %}
-                <li>{{ fruit }} (last item)</li>
-            {% else %}
-                <li>{{ fruit }}</li>
-            {% endif %}
+  <section class="mx-auto w-full max-w-7xl px-4 pb-4 sm:px-6 lg:px-8">
+    <div
+      class="grid grid-cols-1 gap-4 rounded-3xl border border-slate-200 bg-white/90 p-5 sm:grid-cols-3"
+    >
+      <div class="rounded-2xl bg-blue-50 p-4">
+        <p class="text-sm font-black text-blue-900">Fast Checkout</p>
+        <p class="mt-1 text-xs text-blue-800">
+          Complete booking in under 60 seconds.
+        </p>
+      </div>
+      <div class="rounded-2xl bg-sky-50 p-4">
+        <p class="text-sm font-black text-sky-900">Event Verified</p>
+        <p class="mt-1 text-xs text-sky-800">
+          Trusted organizers and real seat availability.
+        </p>
+      </div>
+      <div class="rounded-2xl bg-blue-100 p-4">
+        <p class="text-sm font-black text-blue-900">Real-Time Updates</p>
+        <p class="mt-1 text-xs text-blue-800">
+          Instant alerts for schedule or venue changes.
+        </p>
+      </div>
+    </div>
+  </section>
 
-        {% empty %}
+  <section
+    id="latest-events"
+    class="mx-auto w-full max-w-7xl px-4 py-12 sm:px-6 lg:px-8"
+  >
+    <div class="mb-8 flex flex-wrap items-end justify-between gap-3">
+      <div>
+        <p
+          class="text-sm font-extrabold uppercase tracking-[0.2em] text-blue-700"
+        >
+          Hot Picks
+        </p>
+        <h2 class="mt-1 text-3xl font-black tracking-tight text-slate-900">
+          Trending Events
+        </h2>
+      </div>
+      <a
+        href="{% url 'venue' %}"
+        class="text-sm font-bold text-blue-700 hover:text-blue-600"
+        >View All Events</a
+      >
+    </div>
 
-        <li>No fruits available.</li>
-
-        {% endfor  %}
-
-    </ul>
-
-    <p>{% now "d-m-Y" %}</p>
-    <p>{% now "H:i" %}</p>
-
-    {% comment %} 
-    
-        <input type="text" id="myInput" placeholder="Type to search..." onkeyup="filterList()"> 
-    
-    {% endcomment %}
-
-    <h1 id="title">Welcome Django</h1>
-
-    <button id="btn">
-        Click Me
-    </button>
-
-    <img src="{% static 'images/home.webp' %}" alt="Django Logo" width="200">
-
+    <div class="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
+      {% for event in latest_events %}
+      <article
+        class="group overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl"
+      >
+        <div class="relative">
+          {% if event.image %}
+          <img
+            src="{{ event.image.url }}"
+            alt="{{ event.title }}"
+            class="h-52 w-full object-cover"
+          />
+          {% else %}
+          <img
+            src="{% static 'images/default.webp' %}"
+            alt="{{ event.title }}"
+            class="h-52 w-full object-cover"
+          />
+          {% endif %}
+          <span
+            class="absolute left-3 top-3 rounded-full bg-white/90 px-3 py-1 text-xs font-bold uppercase tracking-wide text-slate-700"
+            >{{ event.venue.city|default:"Live Event" }}</span
+          >
+        </div>
+        <div class="p-5">
+          <h3 class="text-xl font-black tracking-tight text-slate-900">
+            {{ event.title }}
+          </h3>
+          <p class="mt-2 line-clamp-2 text-sm leading-6 text-slate-600">
+            {{ event.description }}
+          </p>
+          <div class="mt-4 flex items-center justify-between">
+            <p class="text-sm font-bold text-slate-700">
+              LKR {{ event.price }}
+            </p>
+            <a
+              href="{% url 'event_detail' event.id %}"
+              class="inline-flex items-center gap-1 text-sm font-extrabold text-blue-700 transition group-hover:gap-2"
+            >
+              View Details
+              <span aria-hidden="true">-></span>
+            </a>
+          </div>
+        </div>
+      </article>
+      {% empty %}
+      <div
+        class="rounded-3xl border border-dashed border-slate-300 bg-white p-10 text-center text-slate-600 md:col-span-2 xl:col-span-3"
+      >
+        <p class="text-base font-bold">No events available at the moment.</p>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+</main>
 {% endblock %}
