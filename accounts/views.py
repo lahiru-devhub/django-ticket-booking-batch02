@@ -3,6 +3,7 @@ from .forms import RegisterForm, LoginForm
 from django.contrib.auth import get_user_model
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.utils import timezone
 
 # Create your views here.
 def login_view(request):
@@ -56,5 +57,15 @@ def logout_view(request):
 
 @login_required
 def dashboard_view(request):
-        
-    return render(request, "accounts/dashboard.html")
+    
+    tickets = request.user.tickets.select_related("event", "event__venue", "booking")
+    today = timezone.localdate() # 2026-08-30
+    
+    context = {
+        "tickets" : tickets,
+        "total_bookings"  : request.user.bookings.count(),
+        "upcoming_tickets" : tickets.filter(event__event_date__gte=today).count(),
+        "past_tickets" : tickets.filter(event__event_date__lt=today).count(),
+    }
+    
+    return render(request, "accounts/dashboard.html", context)

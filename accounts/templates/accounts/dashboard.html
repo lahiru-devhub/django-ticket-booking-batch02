@@ -11,19 +11,60 @@
 
     <div class="rounded-xl bg-white p-6 shadow-sm ring-1 ring-gray-200">
         <p class="text-sm text-gray-500">Total Bookings</p>
-        <p class="mt-2 text-3xl font-bold text-gray-900">0</p>
+        <p class="mt-2 text-3xl font-bold text-gray-900">{{ total_bookings }}</p>
     </div>
 
     <div class="rounded-xl bg-white p-6 shadow-sm ring-1 ring-gray-200">
         <p class="text-sm text-gray-500">Upcoming Tickets</p>
-        <p class="mt-2 text-3xl font-bold text-gray-900">0</p>
+        <p class="mt-2 text-3xl font-bold text-gray-900">{{upcoming_tickets}}</p>
     </div>
 
     <div class="rounded-xl bg-white p-6 shadow-sm ring-1 ring-gray-200">
-        <p class="text-sm text-gray-500">Completed Trips</p>
-        <p class="mt-2 text-3xl font-bold text-gray-900">0</p>
+        <p class="text-sm text-gray-500">Past Events</p>
+        <p class="mt-2 text-3xl font-bold text-gray-900">{{past_tickets}}</p>
     </div>
 
 </div>
+
+<section class="mt-8 overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-gray-200">
+
+    <div class="border-b border-gray-200 px-6 py-4">
+        <h2 class="text-lg font-semibold text-gray-900">My Tickets</h2>
+    </div>
+
+    {% if tickets %}
+
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200 text-left">
+                <thead class="bg-gray-50 text-xs uppercase text-gray-500">
+                    <tr>
+                        <th class="px-6 py-3 font-medium">Ticket</th>
+                        <th class="px-6 py-3 font-medium">Event</th>
+                        <th class="px-6 py-3 font-medium">Date & Time</th>
+                        <th class="px-6 py-3 font-medium">Venue</th>
+                        <th class="px-6 py-3 font-medium">Status</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200 text-sm text-gray-700">
+
+                    {% for ticket in tickets%}
+                        <tr>
+                            <td class="whitespace-nowrap px-6 py-4 font-medium text-gray-900">{{ ticket.ticket_number }}</td>
+                            <td class="px-6 py-4">{{ ticket.event.title }}</td>
+                            <td class="whitespace-nowrap px-6 py-4">{{ ticket.event.event_date|date:"M j, Y" }} at {{ ticket.event.event_time|time:"g:i A" }}</td>
+                            <td class="px-6 py-4">{{ ticket.event.venue.name }}</td>
+                            <td class="px-6 py-4">{{ ticket.booking.get_status_display }}</td>
+                        </tr>
+                    {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+
+    {% else %}
+        <p class="px-6 py-8 text-sm text-gray-500">You have not purchased any tickets yet.</p>
+    {% endif %}
+
+</section>   
 
 {% endblock %}
