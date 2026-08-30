@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Event
+from .models import Event, Booking, Ticket
 from django.shortcuts import get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -11,6 +11,10 @@ from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 
 from django.core.mail import EmailMultiAlternatives
+
+from django.db import transaction
+
+import uuid
 
 # Create your views here.
 
@@ -72,6 +76,68 @@ def book_event_view(request, event_id):
         
         return render(request, "booking/book_event.html", context)
     
+    
+    quantity_raw = request.POST.get("quantity", "1")
+    
+    try:
+        quantity = int(quantity_raw)
+    except(TypeError, ValueError):
+        quantity = 1
+        
+    quantity = max(quantity, 1)
+    
+    if event.available_tickets < 1:
+        return redirect("event_detail", event_id=event_id)
+    
+    if quantity > event.available_tickets:
+        quantity = event.available_tickets
+        
+    
+    with transaction.atomic():
+        
+        event = get_object_or_404(Event.objects.select_for_update("venue"), pk=event_id, is_published=True)
+        
+        if event.available_tickets < quantity:
+            quantity = event.available_tickets
+            
+        if quantity < 1:
+            return redirect("event_detail", event_id=event_id)  
+        
+        booking = Booking.objects.create(
+            user= request.user,
+            event = event,
+            quantity= quantity,
+            total_price = event.price * quantity,
+            status = Booking.Status.CONFIRMED
+        )
+        
+        Ticket.objects.bulk_create([
+            Ticket(
+                booking= booking,
+                event = event,
+                user = request.user,
+                ticket_number = f"TKT-{uuid.uuid4().hex[:10].upper()}"
+            )
+            
+            for _ in range(quantity)
+        ])
+        
+        
+        transaction.on_commit(
+            lambda: _send_booking_confirmation(request, booking)
+        )
+        
+        event.available_tickets -= quantity
+        event.save(update_fields=["available_tickets"])
+        event.save()
+        
+        
+        messages.success(
+            request,
+            f"Your booking for {quantity} tickets(s) to {event.title} is confirmed"
+        )
+        
+        return redirect("dashboard")
     
 def _send_booking_confirmation(request, booking):
     if not booking.user.email:

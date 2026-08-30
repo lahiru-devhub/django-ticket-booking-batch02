@@ -1,6 +1,9 @@
 from django.db import models
 import uuid
 from django.core.validators import MinValueValidator
+from django.conf import settings
+
+from django.utils import timezone
 
 # Create your models here.
 
@@ -41,3 +44,60 @@ class Event(models.Model):
         
     def __str__(self):
         return self.title
+    
+class Booking(models.Model):
+    class Status(models.TextChoices):
+        PENDING = "Pending",  "Pending"
+        CONFIRMED = "Confirmed",  "Confirmed"
+        CANCELLED = "Cancelled", "Cancelled"
+    
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="bookings")
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="bookings")
+    booking_reference = models.CharField(max_length=50, unique=True, editable=False) # A564433FR555
+    status = models.CharField(max_length=20, choices=Status.choices, default=Status.PENDING)
+    quantity = models.PositiveIntegerField(validators=[MinValueValidator(1)])
+    total_price = models.DecimalField(max_digits=10, decimal_places=2)
+    created_at = models.DateTimeField(auto_now_add=True) 
+    
+    class Meta:
+        ordering = ["-created_at"]
+        indexes = [
+            models.Index(fields=["booking_reference"]),
+            models.Index(fields=["status"]),
+        ]
+        
+    def save(self, *args, **kwargs):
+        if not self.booking_reference:
+            self.booking_reference = uuid.uuid4().hex[:12].upper() #6522222222HYGGG
+        
+        if self.event_id and self.quantity:
+            self.total_price = self.event.price * self.quantity  # 200 * 10 = 2000
+        
+        super().save(*args, **kwargs)
+        
+    def __str__(self):
+        return f"{self.booking_reference} - {self.user}"
+    
+class Ticket(models.Model):
+    ticket_number = models.CharField(max_length=50, unique=True, editable=False)
+    booking = models.ForeignKey(Booking, on_delete=models.CASCADE, related_name= "tickets")
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name= "tickets")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name= "tickets")
+    
+    purchase_date = models.DateTimeField(default=timezone.now)
+    qr_code = models.CharField(max_length=255, blank=True)
+    
+    class Meta:
+        ordering = ["-purchase_date"]
+        indexes = [
+            models.Index(fields=["ticket_number"])
+        ]
+        
+    def save(self, *args, **kwargs):
+        if not self.ticket_number:
+            self.ticket_number = f"TKT-{uuid.uuid4().hex[:10].upper()}" # TKT-87EW1W1W1W
+        
+        super().save(*args, **kwargs)
+        
+    def __str__(self):
+        return self.ticket_number
