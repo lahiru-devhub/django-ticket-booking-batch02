@@ -1,4 +1,6 @@
 from django.test import TestCase
+from django.urls import reverse
+from unittest.mock import patch
 from decimal import Decimal
 from datetime import date, time
 from django.contrib.auth import get_user_model
@@ -46,3 +48,13 @@ class BookingModelTests(TestCase):
         self.assertTrue(booking.booking_reference)
         self.assertEqual(len(booking.booking_reference), 12)
         self.assertEqual(booking.total_price, Decimal("3000"))
+
+
+class SupportChatTests(TestCase):
+    @patch("booking.views.generate_chat_reply", return_value="Hello! Music Night has tickets available.")
+    def test_support_chat_returns_generated_reply(self, generate_reply):
+        response = self.client.post(reverse("support_chat"), {"message": "Are tickets available?"})
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["reply"], "Hello! Music Night has tickets available.")
+        generate_reply.assert_called_once_with("Are tickets available?")

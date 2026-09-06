@@ -142,6 +142,10 @@ EMAIL_USE_TLS = config("EMAIL_USE_TLS", "True").lower() in {"1", "true", "yes"}
 EMAIL_USE_SSL = config("EMAIL_USE_SSL", "False").lower() in {"1", "true", "yes"}
 DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL", EMAIL_HOST_USER or "no-reply@example.com")
 
+HF_API_TOKEN = config("HF_API_TOKEN", default="")
+HF_CHAT_URL = config("HF_CHAT_URL", default="https://router.huggingface.co/v1")
+HF_CHAT_MODEL = config("HF_CHAT_MODEL", default="meta-llama/Llama-3.1-8B-Instruct")
+
 
 
 # Static files (CSS, JavaScript, Images)
