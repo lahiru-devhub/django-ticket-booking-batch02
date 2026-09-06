@@ -5,6 +5,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.urls import reverse
 
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+
 from django.conf import settings
 
 from django.template.loader import render_to_string
@@ -15,6 +18,8 @@ from django.core.mail import EmailMultiAlternatives
 from django.db import transaction
 
 import uuid
+
+from .chat_service import generate_chat_reply
 
 # Create your views here.
 
@@ -189,6 +194,33 @@ def contact(request):
     }
     
     return render(request, "public/contact.html", context)
+
+def support(request):
+    return render(request, "public/support.html")
+
+@require_POST
+def support_chat(request):
+
+    customer_message = request.POST.get("message", "").strip()
+    
+    if not customer_message:
+        return JsonResponse(
+            {"error": "Enter a question for support"},
+            status=400
+        )
+    
+    if len(customer_message) > 1000:
+        return JsonResponse({"error": "Please keep your question under 1,000 characters."},  status=400)
+    
+    try:
+        reply = generate_chat_reply(customer_message)
+    except Exception:
+        return JsonResponse(
+            {"error": "Support chat is temporarily unavailable. Please try again shortly."},
+            status=503,
+        )
+
+    return JsonResponse({"reply": reply})
 
 def about(request):
     return render(request, "public/about-us.html")
