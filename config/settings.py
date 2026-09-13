@@ -151,6 +151,7 @@ HF_CHAT_MODEL = config("HF_CHAT_MODEL", default="meta-llama/Llama-3.1-8B-Instruc
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
